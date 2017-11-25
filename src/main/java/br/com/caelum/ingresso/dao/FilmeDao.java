@@ -26,7 +26,8 @@ public class FilmeDao {
     }
 
     public List<Filme> findAll() {
-        return manager.createQuery("select f from Filme f", Filme.class).getResultList();
+        return manager.createQuery("select f from Filme f", Filme.class)
+        		.getResultList();
     }
 
     public void delete(Integer id) {

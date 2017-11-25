@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    @GetMapping("/")
+    @GetMapping("/") //a partir da 4.3.x
+    //@RequestMapping(value="/", method=RequestMethod.GET)
     public String home(){
         return "home";
     }
