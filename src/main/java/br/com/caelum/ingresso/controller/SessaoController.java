@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.caelum.ingresso.dao.FilmeDao;
@@ -18,7 +19,7 @@ public class SessaoController {
 	@Autowired
 	private FilmeDao filmeDao;
 
-	@RequestMapping("/admin/sessao")
+	@RequestMapping(value="/admin/sessao", method=RequestMethod.GET)
 	public String form(@RequestParam("salaId") Integer salaId, Model model) {
 		model.addAttribute("sala", salaDao.findOne(salaId));
 		model.addAttribute("filmes", filmeDao.findAll());
