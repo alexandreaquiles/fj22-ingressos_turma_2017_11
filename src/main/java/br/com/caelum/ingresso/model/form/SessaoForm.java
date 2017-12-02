@@ -2,6 +2,8 @@ package br.com.caelum.ingresso.model.form;
 
 import java.time.LocalTime;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import br.com.caelum.ingresso.model.Filme;
@@ -12,11 +14,14 @@ public class SessaoForm {
 
 	private Integer id;
 	
+	@NotNull(message="Campo obrigatório")
 	private Integer salaId;
 	
+	@NotNull(message="Campo obrigatório")
 	@DateTimeFormat(pattern="HH:mm")
 	private LocalTime horario;
 	
+	@NotNull(message="Campo obrigatório")
 	private Integer filmeId;
 
 	public Integer getId() {
