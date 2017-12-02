@@ -20,4 +20,11 @@ public class SessaoDao {
 		manager.persist(sessao);
 	}
 
+	public List<Sessao> obtemSessoesDaSala(Sala sala) {
+		return manager
+			.createQuery("select s from Sessao s where s.sala = :sala", Sessao.class)
+			.setParameter("sala", sala)
+			.getResultList();
+	}
+
 }
