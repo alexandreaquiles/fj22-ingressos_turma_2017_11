@@ -10,6 +10,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.caelum.ingresso.dao.FilmeDao;
 import br.com.caelum.ingresso.dao.SalaDao;
+import br.com.caelum.ingresso.dao.SessaoDao;
+import br.com.caelum.ingresso.model.Sessao;
+import br.com.caelum.ingresso.model.form.SessaoForm;
 
 @Controller
 public class SessaoController {
@@ -19,21 +22,27 @@ public class SessaoController {
 
 	@Autowired
 	private FilmeDao filmeDao;
+	
+	@Autowired
+	private SessaoDao sessaoDao;
 
 	@GetMapping("/admin/sessao")
-	public ModelAndView form(@RequestParam("salaId") Integer salaId) {
+	public ModelAndView form(@RequestParam("salaId") Integer salaId, SessaoForm sessaoForm) {
 		ModelAndView mav = new ModelAndView("sessao/sessao");
 		mav.addObject("sala", salaDao.findOne(salaId));
 		mav.addObject("filmes", filmeDao.findAll());
+		mav.addObject("form", sessaoForm);
 		return mav;
 	}
 	
 	@PostMapping("/admin/sessao")
 	@Transactional
-	public ModelAndView salva() {
-		//TODO: usar id da sala no redirect
-		ModelAndView mav = new ModelAndView("redirect:/admin/sala/1/sessoes/");
-		//TODO: salvar a sessao aqui...
+	public ModelAndView salva(SessaoForm sessaoForm) {
+		ModelAndView mav = new ModelAndView("redirect:/admin/sala/"+ sessaoForm.getSalaId() +"/sessoes/");
+
+		Sessao sessao = sessaoForm.toSessao();
+		sessaoDao.save(sessao);
+
 		return mav;
 	}
 }

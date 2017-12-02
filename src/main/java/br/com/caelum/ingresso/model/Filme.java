@@ -27,6 +27,10 @@ public class Filme {
 
     }
     
+    public Filme(Integer id) {
+		this.id = id;
+    }
+    
     public Filme(String nome, Duration duracao, String genero) {
 		this.nome = nome;
 		this.duracao = duracao;
