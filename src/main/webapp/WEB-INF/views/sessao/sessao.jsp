@@ -7,7 +7,6 @@
 <ingresso:template>
     <jsp:body>
 		<div class=" col-md-6 col-md-offset-3">
-        <c:set var="bindingResult" value="${requestScope['org.springframework.validation.BindingResult.sessaoForm']}"/>
 
         <h3>Nova sessão para sala: ${sala.nome}</h3>
 
@@ -18,10 +17,7 @@
             <div class="form-group">
                 <label for="horario">Horario:</label>
                 <input id="horario" type="text" name="horario" class="form-control" value="${form.horario}">
-                <c:forEach items="${bindingResult.getFieldErrors('horario')}" var="error">
-                    <span class="text-danger">${error.defaultMessage}</span>
-                </c:forEach>
-
+                <form:errors path="sessaoForm.horario"  cssClass="text-danger" />
             </div>
 
             <div class="form-group">
@@ -32,9 +28,7 @@
                         <option value="${filme.id}" ${filme.id.equals(form.filmeId)? "selected": ""}>${filme.nome}</option>
                     </c:forEach>
                 </select>
-                <c:forEach items="${bindingResult.getFieldErrors('filmeId')}" var="error">
-                    <span class="text-danger">${error.defaultMessage}</span>
-                </c:forEach>
+                <form:errors path="sessaoForm.horario" cssClass="text-danger" />
             </div>
 
 
