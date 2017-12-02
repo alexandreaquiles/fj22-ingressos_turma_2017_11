@@ -28,7 +28,7 @@
                         <option value="${filme.id}" ${filme.id.equals(form.filmeId)? "selected": ""}>${filme.nome}</option>
                     </c:forEach>
                 </select>
-                <form:errors path="sessaoForm.horario" cssClass="text-danger" />
+                <form:errors path="sessaoForm.filmeId" cssClass="text-danger" />
             </div>
 
 
