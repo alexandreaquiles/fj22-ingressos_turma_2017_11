@@ -14,7 +14,6 @@ public class SessaoDao {
 	@PersistenceContext
 	private EntityManager manager;
 
-	@Transactional
 	public void save(Sessao sessao) {
 		manager.persist(sessao);
 	}
