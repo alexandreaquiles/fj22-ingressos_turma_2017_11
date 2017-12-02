@@ -36,6 +36,10 @@ public class Sessao {
 	public LocalTime getHorario() {
 		return horario;
 	}
+	
+	public LocalTime getHorarioTermino() {
+		return horario.plusMinutes(filme.getDuracao().toMinutes());
+	}
 
 	public void setHorario(LocalTime horario) {
 		this.horario = horario;
