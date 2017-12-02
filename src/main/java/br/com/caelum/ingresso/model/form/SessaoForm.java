@@ -14,14 +14,14 @@ public class SessaoForm {
 
 	private Integer id;
 	
-	@NotNull(message="Campo obrigatório")
+	@NotNull
 	private Integer salaId;
 	
-	@NotNull(message="Campo obrigatório")
+	@NotNull
 	@DateTimeFormat(pattern="HH:mm")
 	private LocalTime horario;
 	
-	@NotNull(message="Campo obrigatório")
+	@NotNull
 	private Integer filmeId;
 
 	public Integer getId() {
@@ -57,17 +57,12 @@ public class SessaoForm {
 	}
 
 	public Sessao toSessao() {
-		Sessao sessao = new Sessao();
-		sessao.setId(this.id);
-		
 		Filme filme = new Filme(filmeId);
-		sessao.setFilme(filme);
-
 		Sala sala = new Sala(salaId);
-		sessao.setSala(sala);
 		
-		sessao.setHorario(this.horario);
-		
+		Sessao sessao = new Sessao(this.horario, filme, sala);
+		sessao.setId(this.id);
+
 		return sessao;
 	}
 
