@@ -56,13 +56,9 @@ public class SessaoForm {
 		this.filmeId = filmeId;
 	}
 
-	public Sessao toSessao() {
-		Filme filme = new Filme(filmeId);
-		Sala sala = new Sala(salaId);
-		
+	public Sessao toSessao(Filme filme, Sala sala) {
 		Sessao sessao = new Sessao(this.horario, filme, sala);
 		sessao.setId(this.id);
-
 		return sessao;
 	}
 

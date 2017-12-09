@@ -1,5 +1,7 @@
 package br.com.caelum.ingresso.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,11 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.caelum.ingresso.dao.FilmeDao;
 import br.com.caelum.ingresso.dao.SalaDao;
 import br.com.caelum.ingresso.dao.SessaoDao;
+import br.com.caelum.ingresso.model.Filme;
+import br.com.caelum.ingresso.model.Sala;
 import br.com.caelum.ingresso.model.Sessao;
 import br.com.caelum.ingresso.model.form.SessaoForm;
+import br.com.caelum.ingresso.validacao.GerenciadorDeSessao;
 
 @Controller
 public class SessaoController {
@@ -46,12 +51,21 @@ public class SessaoController {
 			return form(sessaoForm.getSalaId(), sessaoForm);
 		}
 		
-		ModelAndView mav = new ModelAndView("redirect:/admin/sala/"+ sessaoForm.getSalaId() +"/sessoes/");
+		Filme filme = filmeDao.findOne(sessaoForm.getFilmeId());
+		Sala sala = salaDao.findOne(sessaoForm.getSalaId());
 
-		Sessao sessao = sessaoForm.toSessao();
-		sessaoDao.save(sessao);
+		Sessao sessao = sessaoForm.toSessao(filme, sala);
 
-		return mav;
+		List<Sessao> sessoesDaSala = sessaoDao.obtemSessoesDaSala(sessao.getSala());
+		
+		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(sessoesDaSala);
+		
+		if (gerenciador.cabe(sessao)) {
+			sessaoDao.save(sessao);
+			return new ModelAndView("redirect:/admin/sala/"+ sessaoForm.getSalaId() +"/sessoes/");
+		} 
+		
+		return form(sessaoForm.getSalaId(), sessaoForm);
 	}
 }
 
