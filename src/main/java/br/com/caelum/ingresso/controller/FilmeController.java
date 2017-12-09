@@ -1,16 +1,25 @@
 package br.com.caelum.ingresso.controller;
 
-import br.com.caelum.ingresso.dao.FilmeDao;
-import br.com.caelum.ingresso.model.Filme;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
-import java.util.Optional;
+import br.com.caelum.ingresso.dao.FilmeDao;
+import br.com.caelum.ingresso.dao.SessaoDao;
+import br.com.caelum.ingresso.model.DetalhesDoFilme;
+import br.com.caelum.ingresso.model.Filme;
+import br.com.caelum.ingresso.rest.ImdbClient;
 
 /**
  * Created by nando on 03/03/17.
@@ -21,6 +30,12 @@ public class FilmeController {
 
     @Autowired
     private FilmeDao filmeDao;
+    
+    @Autowired
+    private SessaoDao sessaoDao;
+    
+    @Autowired
+    private ImdbClient imdbClient;
 
 
     @GetMapping({"/admin/filme", "/admin/filme/{id}"})
@@ -72,4 +87,46 @@ public class FilmeController {
         filmeDao.delete(id);
     }
 
+    @GetMapping("/filme/em-cartaz")
+    public ModelAndView emCartaz() {
+    	ModelAndView mav = new ModelAndView("filme/em-cartaz");
+    	mav.addObject("filmes", filmeDao.findAll());
+    	return mav;
+    }
+    
+    @GetMapping("/filme/{id}/detalhe")
+    public ModelAndView detalhe(@PathVariable("id") Integer id) {
+    	
+    	ModelAndView mav = new ModelAndView("filme/detalhe");
+    	
+    	Filme filme = filmeDao.findOne(id);
+
+    	DetalhesDoFilme detalhes = imdbClient.request(filme);
+    	
+    	mav.addObject("sessoes", sessaoDao.obtemSessoesDoFilme(filme));
+    	mav.addObject("detalhes", detalhes);
+    	
+    	return mav;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
