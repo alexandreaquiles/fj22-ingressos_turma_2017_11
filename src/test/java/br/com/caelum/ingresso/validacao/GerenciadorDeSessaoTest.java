@@ -1,5 +1,6 @@
 package br.com.caelum.ingresso.validacao;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -27,9 +28,9 @@ public class GerenciadorDeSessaoTest {
 		LocalTime as11 = LocalTime.of(11, 0);
 		
 		Duration baixa = Duration.ofMinutes(116);
-		deVoltaParaOFuturo = new Filme("Back To The Future", baixa, "Aventura");
+		deVoltaParaOFuturo = new Filme("Back To The Future", baixa, "Aventura", BigDecimal.TEN);
 		
-		sala1 = new Sala("Sala 1");
+		sala1 = new Sala("Sala 1", BigDecimal.TEN);
 
 		Sessao sessaoExistente = new Sessao(as11, deVoltaParaOFuturo, sala1);
 		
@@ -39,7 +40,7 @@ public class GerenciadorDeSessaoTest {
 		gerenciador = new GerenciadorDeSessao(existentes);
 
 		Duration media = Duration.ofMinutes(120);
-		terminator = new Filme("The Terminator", media, "Ação");
+		terminator = new Filme("The Terminator", media, "Ação", BigDecimal.TEN);
 	}
 	
 	@Test
