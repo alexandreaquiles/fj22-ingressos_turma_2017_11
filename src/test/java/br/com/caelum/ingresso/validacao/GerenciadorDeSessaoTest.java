@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.ingresso.model.Filme;
@@ -13,30 +14,37 @@ import br.com.caelum.ingresso.model.Sala;
 import br.com.caelum.ingresso.model.Sessao;
 
 public class GerenciadorDeSessaoTest {
-	
-	@Test
-	public void naoDevePermitirSessaoIniciandoNoMesmoHorarioDeUmaJaExistente () {
-		
-		//ARRANGE - criar os objetos
 
+	private List<Sessao> existentes;
+	private GerenciadorDeSessao gerenciador;
+	private Sala sala1;
+	private Filme terminator;
+	private Filme deVoltaParaOFuturo;
+
+	@Before
+	public void criaGerenciador() {
+		//ARRANGE - criar os objetos
 		LocalTime as11 = LocalTime.of(11, 0);
 		
 		Duration baixa = Duration.ofMinutes(116);
-		Filme deVoltaParaOFuturo = new Filme("Back To The Future", baixa, "Aventura");
+		deVoltaParaOFuturo = new Filme("Back To The Future", baixa, "Aventura");
 		
-		Sala sala1 = new Sala("Sala 1");
+		sala1 = new Sala("Sala 1");
 
 		Sessao sessaoExistente = new Sessao(as11, deVoltaParaOFuturo, sala1);
 		
-		List<Sessao> existentes = new ArrayList<>();
+		existentes = new ArrayList<>();
 		existentes.add(sessaoExistente);
 
-		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(existentes);
-		
-		LocalTime as11DeNovo = LocalTime.of(11, 0);
+		gerenciador = new GerenciadorDeSessao(existentes);
 
 		Duration media = Duration.ofMinutes(120);
-		Filme terminator = new Filme("The Terminator", media, "Ação");
+		terminator = new Filme("The Terminator", media, "Ação");
+	}
+	
+	@Test
+	public void naoDevePermitirSessaoIniciandoNoMesmoHorarioDeUmaJaExistente () {
+		LocalTime as11DeNovo = LocalTime.of(11, 0);
 
 		Sessao nova = new Sessao(as11DeNovo, terminator, sala1);
 		
@@ -51,24 +59,7 @@ public class GerenciadorDeSessaoTest {
 	
 	@Test
 	public void naoDevePermitirSessaoIniciandoNoMeioDeUmaJaExistente () {
-		LocalTime as11 = LocalTime.of(11, 0);
-		
-		Duration baixa = Duration.ofMinutes(116);
-		Filme deVoltaParaOFuturo = new Filme("Back To The Future", baixa, "Aventura");
-		
-		Sala sala1 = new Sala("Sala 1");
-
-		Sessao sessaoExistente = new Sessao(as11, deVoltaParaOFuturo, sala1);
-		
-		List<Sessao> existentes = new ArrayList<>();
-		existentes.add(sessaoExistente);
-
-		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(existentes);
-		
 		LocalTime as11EMeia = LocalTime.of(11, 30);
-
-		Duration media = Duration.ofMinutes(120);
-		Filme terminator = new Filme("The Terminator", media, "Ação");
 
 		Sessao nova = new Sessao(as11EMeia, terminator, sala1);
 		
@@ -81,24 +72,7 @@ public class GerenciadorDeSessaoTest {
 	
 	@Test
 	public void devePermitirNovaSessaoIniciandoAposFimDaJaExistente() {
-		LocalTime as11 = LocalTime.of(11, 0);
-		
-		Duration baixa = Duration.ofMinutes(116);
-		Filme deVoltaParaOFuturo = new Filme("Back To The Future", baixa, "Aventura");
-		
-		Sala sala1 = new Sala("Sala 1");
-
-		Sessao sessaoExistente = new Sessao(as11, deVoltaParaOFuturo, sala1);
-		
-		List<Sessao> existentes = new ArrayList<>();
-		existentes.add(sessaoExistente);
-
-		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(existentes);
-		
 		LocalTime as13 = LocalTime.of(13, 00);
-
-		Duration media = Duration.ofMinutes(120);
-		Filme terminator = new Filme("The Terminator", media, "Ação");
 
 		Sessao nova = new Sessao(as13, terminator, sala1);
 		
@@ -110,24 +84,7 @@ public class GerenciadorDeSessaoTest {
 
 	@Test
 	public void devePermitirNovaSessaoTerminandoAntesDoInicioDaJaExistente() {
-		LocalTime as11 = LocalTime.of(11, 0);
-
-		Duration baixa = Duration.ofMinutes(116);
-		Filme deVoltaParaOFuturo = new Filme("Back To The Future", baixa, "Aventura");
-		
-		Sala sala1 = new Sala("Sala 1");
-
-		Sessao sessaoExistente = new Sessao(as11, deVoltaParaOFuturo, sala1);
-		
-		List<Sessao> existentes = new ArrayList<>();
-		existentes.add(sessaoExistente);
-
-		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(existentes);
-		
 		LocalTime as8EMeia = LocalTime.of(8, 30);
-
-		Duration media = Duration.ofMinutes(120);
-		Filme terminator = new Filme("The Terminator", media, "Ação");
 
 		Sessao nova = new Sessao(as8EMeia, terminator, sala1);
 		
@@ -139,24 +96,7 @@ public class GerenciadorDeSessaoTest {
 	
 	@Test
 	public void naoDevePermitirSessaoFinalizandoNoMeioDaJaExistente() {
-		LocalTime as11 = LocalTime.of(11, 0);
-
-		Duration baixa = Duration.ofMinutes(116);
-		Filme deVoltaParaOFuturo = new Filme("Back To The Future", baixa, "Aventura");
-		
-		Sala sala1 = new Sala("Sala 1");
-
-		Sessao sessaoExistente = new Sessao(as11, deVoltaParaOFuturo, sala1);
-		
-		List<Sessao> existentes = new ArrayList<>();
-		existentes.add(sessaoExistente);
-
-		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(existentes);
-		
 		LocalTime as9EMeia = LocalTime.of(9, 30);
-
-		Duration media = Duration.ofMinutes(120);
-		Filme terminator = new Filme("The Terminator", media, "Ação");
 
 		Sessao nova = new Sessao(as9EMeia, terminator, sala1);
 		
@@ -167,29 +107,11 @@ public class GerenciadorDeSessaoTest {
 	
 	@Test
 	public void devePermitirUmaSessaoEntreDuasJaExistentesQuandoCouber() {
-		LocalTime as11 = LocalTime.of(11, 0);
-
-		Duration baixa = Duration.ofMinutes(116);
-		Filme deVoltaParaOFuturo = new Filme("Back To The Future", baixa, "Aventura");
-		
-		Sala sala1 = new Sala("Sala 1");
-
-		Sessao sessaoExistente = new Sessao(as11, deVoltaParaOFuturo, sala1);
-
-		List<Sessao> existentes = new ArrayList<>();
-		existentes.add(sessaoExistente);
-
 		LocalTime as18 = LocalTime.of(18, 0);
 		Sessao outraSessaoExistente = new Sessao(as18, deVoltaParaOFuturo, sala1);
 		existentes.add(outraSessaoExistente);
 
-		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(existentes);
-		
 		LocalTime as13EMeia = LocalTime.of(13, 30);
-
-		Duration media = Duration.ofMinutes(120);
-		Filme terminator = new Filme("The Terminator", media, "Ação");
-
 		Sessao nova = new Sessao(as13EMeia, terminator, sala1);
 		
 		boolean cabe = gerenciador.cabe(nova);
@@ -199,28 +121,11 @@ public class GerenciadorDeSessaoTest {
 
 	@Test
 	public void naoDevePermitirUmaSessaoEntreDuasJaExistentesSeNAOCouber() {
-		LocalTime as11 = LocalTime.of(11, 0);
-
-		Duration baixa = Duration.ofMinutes(116);
-		Filme deVoltaParaOFuturo = new Filme("Back To The Future", baixa, "Aventura");
-		
-		Sala sala1 = new Sala("Sala 1");
-
-		Sessao sessaoExistente = new Sessao(as11, deVoltaParaOFuturo, sala1);
-
-		List<Sessao> existentes = new ArrayList<>();
-		existentes.add(sessaoExistente);
-
 		LocalTime as15 = LocalTime.of(15, 0);
 		Sessao outraSessaoExistente = new Sessao(as15, deVoltaParaOFuturo, sala1);
 		existentes.add(outraSessaoExistente);
-
-		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(existentes);
 		
 		LocalTime as13EMeia = LocalTime.of(13, 30);
-
-		Duration media = Duration.ofMinutes(120);
-		Filme terminator = new Filme("The Terminator", media, "Ação");
 
 		Sessao nova = new Sessao(as13EMeia, terminator, sala1);
 		
