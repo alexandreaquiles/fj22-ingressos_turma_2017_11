@@ -164,6 +164,71 @@ public class GerenciadorDeSessaoTest {
 
 		Assert.assertFalse("Não deveria caber ...", cabe);
 	}
+	
+	@Test
+	public void devePermitirUmaSessaoEntreDuasJaExistentesQuandoCouber() {
+		LocalTime as11 = LocalTime.of(11, 0);
+
+		Duration baixa = Duration.ofMinutes(116);
+		Filme deVoltaParaOFuturo = new Filme("Back To The Future", baixa, "Aventura");
+		
+		Sala sala1 = new Sala("Sala 1");
+
+		Sessao sessaoExistente = new Sessao(as11, deVoltaParaOFuturo, sala1);
+
+		List<Sessao> existentes = new ArrayList<>();
+		existentes.add(sessaoExistente);
+
+		LocalTime as18 = LocalTime.of(18, 0);
+		Sessao outraSessaoExistente = new Sessao(as18, deVoltaParaOFuturo, sala1);
+		existentes.add(outraSessaoExistente);
+
+		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(existentes);
+		
+		LocalTime as13EMeia = LocalTime.of(13, 30);
+
+		Duration media = Duration.ofMinutes(120);
+		Filme terminator = new Filme("The Terminator", media, "Ação");
+
+		Sessao nova = new Sessao(as13EMeia, terminator, sala1);
+		
+		boolean cabe = gerenciador.cabe(nova);
+
+		Assert.assertTrue("Deveria caber ...", cabe);
+	}
+
+	@Test
+	public void naoDevePermitirUmaSessaoEntreDuasJaExistentesSeNAOCouber() {
+		LocalTime as11 = LocalTime.of(11, 0);
+
+		Duration baixa = Duration.ofMinutes(116);
+		Filme deVoltaParaOFuturo = new Filme("Back To The Future", baixa, "Aventura");
+		
+		Sala sala1 = new Sala("Sala 1");
+
+		Sessao sessaoExistente = new Sessao(as11, deVoltaParaOFuturo, sala1);
+
+		List<Sessao> existentes = new ArrayList<>();
+		existentes.add(sessaoExistente);
+
+		LocalTime as15 = LocalTime.of(15, 0);
+		Sessao outraSessaoExistente = new Sessao(as15, deVoltaParaOFuturo, sala1);
+		existentes.add(outraSessaoExistente);
+
+		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(existentes);
+		
+		LocalTime as13EMeia = LocalTime.of(13, 30);
+
+		Duration media = Duration.ofMinutes(120);
+		Filme terminator = new Filme("The Terminator", media, "Ação");
+
+		Sessao nova = new Sessao(as13EMeia, terminator, sala1);
+		
+		boolean cabe = gerenciador.cabe(nova);
+
+		Assert.assertFalse("Não deveria caber ...", cabe);
+	}
+
 }
 
 
